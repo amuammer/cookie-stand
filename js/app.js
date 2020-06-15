@@ -2,95 +2,92 @@ function randomBetween(min, max) {
   return Math.floor(Math.random() * (max - min) + 1);
 }
 
-function generateData(object) {
-  for (let i = 6; i <= 19; i++) {
-    const randomCustomers = randomBetween(object.minCustomers, object.maxCustomers);
-    const randomCookies = Math.round(randomCustomers * object.avgCookies);
-    object.total+= randomCookies;
+function Branch(location, minCustomers, maxCustomers, avgCookies) {
+    this.location = location;
+    this.minCustomers = minCustomers;
+    this.maxCustomers = maxCustomers;
+    this.avgCookies = avgCookies;
+    this.data = [];
+    this.total = 0;
+}
+
+const hourlyTotal = [];
+Branch.prototype.generateData = function(){
+  for (let i = 0; i <= 13; i++) {
+    const randomCustomers = randomBetween(this.minCustomers, this.maxCustomers);
+    const randomCookies = Math.round(randomCustomers * this.avgCookies);
+    this.total+= randomCookies;
     // 1 am 100 cookies
-    object.data.push(`${i <= 12 ? i : i-12}${i < 12 ? "am" : "pm"}: ${randomCookies} cookies`);
+    this.data.push(randomCookies);
+    // first time undefined
+    hourlyTotal[i] = hourlyTotal[i] !== undefined ?  hourlyTotal[i] + randomCookies : randomCookies;
   }
 }
 
-function render(object) {
-  const article =  document.getElementById("article");
-  const p = document.createElement("p");
-  p.innerText = object.location;
-  article.appendChild(p);
-  const ul = document.createElement("ul");
-  for (var i = 0; i < object.data.length; i++) {
-    const li = document.createElement("li");
-    li.innerText = object.data[i];
-    ul.appendChild(li);
+Branch.prototype.render = function() {
+  const table =  document.getElementById("table");
+  const tr = document.createElement("tr");
+  const location = document.createElement("td");
+  location.innerText = this.location;
+  tr.appendChild(location);
+  for (var i = 0; i < this.data.length; i++) {
+    const td = document.createElement("td");
+    td.innerText = this.data[i];
+    tr.appendChild(td);
   }
-  const total = document.createElement("li");
-  total.innerText = "Total:" + object.total;
-  ul.appendChild(total);
-  article.appendChild(ul);
+  const total = document.createElement("td");
+  total.innerText = this.total;
+  tr.appendChild(total);
+  table.appendChild(tr);
 }
 
-const Seattle = {
-  location: "Seattle",
-  minCustomers: 23,
-  maxCustomers: 65,
-  avgCookies: 6.3,
-  data: [],
-  total: 0,
-}
+const Seattle = new Branch("Seattle", 23, 65, 6.3);
 
-const Tokyo = {
-  location: "Tokyo",
-  minCustomers: 3,
-  maxCustomers: 24,
-  avgCookies: 1.2,
-  data: [],
-  total: 0,
-}
+const Tokyo = new Branch("Tokyo", 3, 24, 1.2);
 
-const Dubai = {
-  location: "Dubai",
-  minCustomers: 11,
-  maxCustomers: 38,
-  avgCookies: 3.7,
-  data: [],
-  total: 0,
-}
+const Dubai = new Branch("Dubai", 11, 38, 3.7);
 
-const Paris = {
-  location: "Paris",
-  minCustomers: 20,
-  maxCustomers: 38,
-  avgCookies: 2.3,
-  data: [],
-  total: 0,
-}
+const Paris = new Branch("Paris", 20, 38, 2.3);
 
-const Lima = {
-  location: "Lima",
-  minCustomers: 2,
-  maxCustomers: 16,
-  avgCookies: 4.6,
-  data: [],
-  total: 0,
-}
+const Lima = new Branch("Lima", 2, 16, 4.6);
 
 
 // Seattle
-generateData(Seattle);
-render(Seattle);
+Seattle.generateData();
+Seattle.render();
 
 // Tokyo
-generateData(Tokyo);
-render(Tokyo);
+Tokyo.generateData();
+Tokyo.render();
 
 // Dubai
-generateData(Dubai);
-render(Dubai);
+Dubai.generateData();
+Dubai.render();
 
 // Paris
-generateData(Paris);
-render(Paris);
+Paris.generateData();
+Paris.render();
 
 // Lima
-generateData(Lima);
-render(Lima);
+Lima.generateData();
+Lima.render();
+
+function renderHourlyTotal(){
+  const table =  document.getElementById("table");
+  const tr = document.createElement("tr");
+  const location = document.createElement("td");
+  location.innerText = "Totals";
+  tr.appendChild(location);
+  for (var i = 0; i < hourlyTotal.length; i++) {
+    const td = document.createElement("td");
+    td.innerText = hourlyTotal[i];
+    tr.appendChild(td);
+  }
+  const total = document.createElement("td");
+  const totalsSum = eval(hourlyTotal.join('+'));
+  total.innerText = totalsSum;
+  tr.appendChild(total);
+  table.appendChild(tr);
+}
+
+renderHourlyTotal();
