@@ -29,13 +29,16 @@ ul.topnav li.right {float: right;}
   ul.topnav li {float: none;}
 }
 
+table {
+  margin-top: 10px;
+}
 
 table, th, td {
   border: 1px solid black;
   border-collapse: collapse;
 }
+
 th, td {
-  padding: 15px;
   text-align: left;
 }
 table#t01 {
@@ -65,4 +68,9 @@ div.desc {
   padding: 0 6px;
   float: left;
   width: 30.99999%;
+}
+
+#addLocationForm {
+  margin-top: 10px;
+  width: 50%;
 }
