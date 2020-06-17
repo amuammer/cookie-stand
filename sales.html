@@ -13,9 +13,22 @@
     </ul>
   </header>
   <main>
-    <table id="table" style="width:50%">
+
+    <center>
+    <form action="#" method="post" id="addLocationForm">
+        <fieldset>
+          <legend>Add Location</legend>
+          Name: <input required name="name" type="text"><br>
+          minCustomers: <input required name="minCustomers" min="1" type="number"><br>
+          maxCustomers: <input required name="maxCustomers" min="1" type="number"><br>
+          avgCookies: <input required name="avgCookies" step="0.01" type="number"><br>
+          <br/>
+          <input type="submit" name="" value="add Location">
+        </fieldset>
+    </form>
+    <table id="table">
       <tr>
-      <th>Branch</th>
+      <th>Location</th>
       <th>6:00am</th>
       <th>7:00am</th>
       <th>8:00am</th>
@@ -33,10 +46,9 @@
       <th>total</th>
       </tr>
    </table>
-    <article id="article">
-
-    </article>
+ </center>
   </main>
     <script src="js/app.js" charset="utf-8"></script>
+    <script src="js/sales.js" charset="utf-8"></script>
   </body>
 </html>
